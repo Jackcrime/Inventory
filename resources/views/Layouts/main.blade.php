@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" x-data="{ sidebarOpen: window.innerWidth >= 640, toggleSidebar() { this.sidebarOpen = !this.sidebarOpen } }" @resize.window="sidebarOpen = window.innerWidth >= 640">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,13 +7,9 @@
   @vite(['resources/css/app.css', 'resources/js/app.js'])
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
-
 <body x-data="{ sidebarOpen: false }" class="min-h-screen bg-gray-100">
-
-  <!-- Mobile & Tablet overlay -->
   <div
     x-show="sidebarOpen"
     x-transition:enter="transition ease-out duration-300"
@@ -65,51 +60,19 @@
         </a>
       </nav>
     </aside>
-
     <!-- Content -->
     <div class="flex-1 flex flex-col w-full overflow-x-hidden">
-
       <!-- Top navbar -->
       <header class="flex items-center justify-between bg-white h-16 px-4 shadow-md">
         <button @click="sidebarOpen = true" class="lg:hidden text-blue-700 text-2xl">
           <i class="fas fa-bars"></i>
         </button>
-        <div class="flex items-center space-x-4 ml-auto">
-          <span class="text-gray-700 font-medium">Admin {Name}</span>
-          <div class="relative">
-            <button id="profile-button" class="flex items-center focus:outline-none">
-              <img src="https://i.pravatar.cc/40" alt="Profile" class="w-10 h-10 rounded-full object-cover">
-            </button>
-            <div id="profile-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-20">
-              <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</a>
-            </div>
-          </div>
-        </div>
       </header>
-
       <!-- Main content -->
       <main class="flex-1 overflow-y-auto p-4 md:p-6 max-w-full">
         @yield('content')
       </main>
     </div>
   </div>
-
-  <!-- Profile dropdown JS -->
-  <script>
-    const profileButton = document.getElementById('profile-button');
-    const profileDropdown = document.getElementById('profile-dropdown');
-
-    profileButton.addEventListener('click', (e) => {
-      e.stopPropagation();
-      profileDropdown.classList.toggle('hidden');
-    });
-
-    document.addEventListener('click', (e) => {
-      if (!profileButton.contains(e.target) && !profileDropdown.contains(e.target)) {
-        profileDropdown.classList.add('hidden');
-      }
-    });
-  </script>
 </body>
-
 </html>
