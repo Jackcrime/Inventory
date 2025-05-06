@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Location;
@@ -10,7 +11,7 @@ class LocationController extends Controller
     {
         return view('location');
     }
-    
+
     public function json(Request $request)
     {
         $query = Location::withTrashed()->orderBy('id', 'desc');
@@ -24,6 +25,21 @@ class LocationController extends Controller
         return response()->json([
             'data' => $locations->items(),
             'links' => (string) $locations->links('pagination::tailwind'),
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+
+        $location = Location::create($validated);
+
+        return response()->json([
+            'message' => 'Lokasi berhasil ditambahkan',
+            'data' => $location,
         ]);
     }
 
@@ -46,8 +62,8 @@ class LocationController extends Controller
 
     public function destroy($id)
     {
-        $location = Location::findOrFail($id); 
-        $location->delete(); 
+        $location = Location::findOrFail($id);
+        $location->delete();
 
         return response()->json([
             'message' => 'Lokasi berhasil dihapus',
@@ -56,7 +72,7 @@ class LocationController extends Controller
 
     public function restore($id)
     {
-        $location = Location::onlyTrashed()->findOrFail($id); 
+        $location = Location::onlyTrashed()->findOrFail($id);
         $location->restore();
 
         return response()->json([
@@ -66,8 +82,8 @@ class LocationController extends Controller
 
     public function forceDelete($id)
     {
-        $location = Location::onlyTrashed()->findOrFail($id); 
-        $location->forceDelete(); 
+        $location = Location::onlyTrashed()->findOrFail($id);
+        $location->forceDelete();
 
         return response()->json([
             'message' => 'Lokasi berhasil dihapus permanen',
