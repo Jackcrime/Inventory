@@ -18,7 +18,9 @@ class ItemController extends Controller
 
     public function json(Request $request)
     {
-        $query = Item::with(['category', 'location']);
+        $query = Item::with(['category', 'location'])
+        ->withTrashed()
+        ->latest('id');
 
         if ($request->search) {
             $query->where('name', 'like', '%' . $request->search . '%');
